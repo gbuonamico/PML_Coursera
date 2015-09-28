@@ -93,42 +93,47 @@ library(MASS)
 library(randomForest)
 library(class)
 
-FitModel0 <- rfcv(reducedTrainingHAR[,1:(dim(reducedTrainingHAR)[2]-1)],reducedTrainingHAR[,dim(reducedTrainingHAR)[2]],cv.fold=5,mtry=function(p) max(1, floor(sqrt(p))), recursive=TRUE)
+#FitModel <- rfcv(reducedTrainingHAR[,1:(dim(reducedTrainingHAR)[2]-1)],reducedTrainingHAR[,dim(reducedTrainingHAR)[2]],cv.fold=5,mtry=function(p) max(1, floor(sqrt(p))), recursive=TRUE)
 
 #
 # Alternatively, we can use this
-#FitModel <- randomForest(reducedTrainingHAR[,1:(dim(reducedTrainingHAR)[2]-1)],reducedTrainingHAR[,dim(reducedTrainingHAR)[2]],cv.fold=5, importance=TRUE)
-FitModel2 <- train(classe ~ ., method="rf",data=reducedTrainingHAR,trControl=trainControl(method="cv",number=5),prox=TRUE,importance=TRUE,allowParallel=TRUE)
+#FitModel0 <- randomForest(reducedTrainingHAR[,1:(dim(reducedTrainingHAR)[2]-1)],reducedTrainingHAR[,dim(reducedTrainingHAR)[2]],cv.fold=5, importance=TRUE)
+#FitModel2 <- train(classe ~ ., method="rf",data=reducedTrainingHAR,trControl=trainControl(method="cv",number=5),prox=TRUE,importance=TRUE,allowParallel=TRUE)
 
 ```
 Plotting FitModel2 shows that the error decrease is not very important after 26 predictors chosen by the alghorythm
-FitModel0 (obtained with rfcv function)shows also how errors decrease with n° trees for each class
+FitModel (obtained with rfcv function)shows also how errors decrease with n° trees for each class
 
-```{r echo=off}
-plot(FitModel2)
-plot(FitModel0)
+```{r, echo=FALSE}
+
+#plot(FitModel2)
+#plot(FitModel)
+
 ```
 
 also print the most important predictors
 
-```{r echo=off}
-varImpPlot(FitModel0)
+```{r, echo=FALSE}
+#varImpPlot(FitModel)
 
 ```
 
 
 The model result shows a high accuracy in the training set.
 ```{r}
-FitModel2
+#FitModel2
 
 ```
+
 STEP4 EVALUATION
-Let's try it on the testing set and use confusion matrix to assess the score
+
+Lets try it on the testing set and use confusion matrix to assess the score
+
 ```{r}
-resu<-confusionMatrix(reducedTestingHAR$classe, predict(FitModel2, reducedTestingHAR))
-resu
-z<-as.table(resu)
-z
+#resu<-confusionMatrix(reducedTestingHAR$classe, predict(FitModel2, reducedTestingHAR))
+#resu
+#z<-as.table(resu)
+#z
 
 
 # try also a heatmap but not really nice
@@ -145,7 +150,7 @@ Let's finish with the 20 observations loaded in the file (let's apply same reduc
 outdata20<-inDatasetValidHAR[,8:d[2]]
 outdata20<-outdata20[,-nsv]
 outdata20<-outdata20[, na_perc <= 0.9]
-predict20=predict(FitModel,outdata20)
+#predict20=predict(FitModel,outdata20)
 #predict20
 
 
